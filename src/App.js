@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { API, Storage } from 'aws-amplify';
 import {
   Button,
@@ -53,7 +54,7 @@ const App = ({ signOut }) => {
     });
     fetchNotes();
     event.target.reset();
-  }  
+  }
 
   async function deleteNote({ id, name }) {
     const newNotes = notes.filter((note) => note.id !== id);
@@ -99,6 +100,7 @@ const App = ({ signOut }) => {
           type="file"
           style={{ alignSelf: "end" }}
         />
+
         {notes.map((note) => (
           <Flex
             key={note.id || note.name}
@@ -113,7 +115,7 @@ const App = ({ signOut }) => {
             {note.image && (
               <Image
                 src={note.image}
-                alt={`visual aid for ${notes.name}`}
+                alt={`visual aid for ${note.name}`}
                 style={{ width: 400 }}
               />
             )}
@@ -125,6 +127,6 @@ const App = ({ signOut }) => {
       </View>
     </View>
   );
-}
+};
 
-export default withAuthenticator(App);
+export default withAuth
