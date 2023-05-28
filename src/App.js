@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import "@aws-amplify/ui-react/styles.css";
-import { API, Storage } from "aws-amplify";
+import React, { useState, useEffect } from 'react';
+import { API, Storage } from 'aws-amplify';
 import {
   Button,
   Flex,
@@ -11,7 +9,7 @@ import {
   TextField,
   View,
   withAuthenticator,
-} from "@aws-amplify/ui-react";
+} from '@aws-amplify/ui-react';
 import { listNotes } from "./graphql/queries";
 import {
   createNote as createNoteMutation,
@@ -47,9 +45,9 @@ const App = ({ signOut }) => {
     const data = {
       name: form.get("name"),
       description: form.get("description"),
-      image: image ? image.name : null,
+      image: image.name,
     };
-    if (image) await Storage.put(data.name, image);
+    if (!!data.image) await Storage.put(data.name, image);
     await API.graphql({
       query: createNoteMutation,
       variables: { input: data },
@@ -89,12 +87,6 @@ const App = ({ signOut }) => {
             variation="quiet"
             required
           />
-          <View
-            name="image"
-            as="input"
-            type="file"
-            style={{ alignSelf: "end" }}
-          />
           <Button type="submit" variation="primary">
             Create Note
           </Button>
@@ -102,6 +94,12 @@ const App = ({ signOut }) => {
       </View>
       <Heading level={2}>Current Notes</Heading>
       <View margin="3rem 0">
+        <View
+          name="image"
+          as="input"
+          type="file"
+          style={{ alignSelf: "end" }}
+        />
         {notes.map((note) => (
           <Flex
             key={note.id || note.name}
@@ -124,3 +122,10 @@ const App = ({ signOut }) => {
               Delete note
             </Button>
           </Flex>
+        ))}
+      </View>
+    </View>
+  );
+};
+
+export default withAuthenticator(App);
