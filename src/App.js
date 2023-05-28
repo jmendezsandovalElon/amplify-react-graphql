@@ -122,5 +122,6 @@ const App = ({ signOut }) => {
             )}
             <Button variation="link" onClick={() => deleteNote(note)}>
               Delete note
+            </Button
 
 export default withAuthenticator(App);
